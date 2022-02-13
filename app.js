@@ -74,7 +74,7 @@ student_form.addEventListener('submit', function(e){
 
 all_student();
 function all_student(){
-
+    let result = new Result;
     let all_data = dataGet('Result_app');
 
     let data = '';
@@ -88,11 +88,15 @@ function all_student(){
         <td>${student.roll}</td>
         <td>${student.class}</td>
         <td>${student.location}</td>
-        <td>A</td>
-        <td>4.80</td>
+        <td>
+        ${result.fanalResult( student.ban, student.eng, student.math, student.science, student.ss, student.reli ).fainalcgpa}
+        </td>
+        <td>
+        ${result.fanalResult( student.ban, student.eng, student.math, student.science, student.ss, student.reli ).totalresult}
+        </td>
         <td><img style="width:50px; height:50px; object-fit: cover;" src="${student.photo}"></td>
         <td>
-            <button class="btn btn-info btn-sm">View</button>
+            <button class="btn btn-info btn-sm" data-bs-toggle="modal" onclick="fainal_data(${index})" data-bs-target="#student_single_data" >View</button>
             <button onclick="deleteData(${ index })" class="btn btn-danger btn-sm">Delete</button>
         </td>
     </tr>
@@ -125,6 +129,92 @@ function deleteData(id){
     }else{
         return false;
     }
+
+
+
+}
+
+
+// modal function 
+
+const student_result = document.querySelector('.student_result');
+
+function fainal_data(index){
+
+    let result = new Result;
+    let storage_data = dataGet('Result_app');
+
+
+    student_result.innerHTML = `
+    
+                         <img src="${storage_data[index].photo}" alt="">
+
+                        <h1>${storage_data[index].name}</h1>
+                        <hr>
+                        <table class="table table-bordered table-striped" >
+
+                            <thead>
+                                <tr>
+                                    <th>Subject</th>
+                                    <th>Marks</th>
+                                    <th>GPA</th>
+                                    <th>Grade</th>
+                                    <th>CGPA</th>
+                                    <th>Result</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <th>Bangla</th>
+                                    <td>${storage_data[index].ban}</td>
+                                    <td>${result.result(storage_data[index].ban).gpacal}</td>
+                                    <td>${result.result(storage_data[index].ban).gradecal}</td>
+                                    <td rowspan="6">
+                                    
+                                    ${result.fanalResult( storage_data[index].ban, storage_data[index].eng, storage_data[index].math, storage_data[index].science, storage_data[index].ss, storage_data[index].reli ).fainalcgpa}
+                                    
+                                    </td>
+                                    <td rowspan="6">
+                                    
+                                    ${result.fanalResult( storage_data[index].ban, storage_data[index].eng, storage_data[index].math, storage_data[index].science, storage_data[index].ss, storage_data[index].reli ).totalresult}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>English</th>
+                                    <td>${storage_data[index].eng}</td>
+                                    <td>${result.result(storage_data[index].eng).gpacal}</td>
+                                    <td>${result.result(storage_data[index].eng).gradecal}</td>
+                                </tr>
+                                <tr>
+                                    <th>Maths</th>
+                                    <td>${storage_data[index].math}</td>
+                                    <td>${result.result(storage_data[index].math).gpacal}</td>
+                                    <td>${result.result(storage_data[index].math).gradecal}</td>
+                                </tr>
+                                <tr>
+                                    <th>Science</th>
+                                    <td>${storage_data[index].science}</td>
+                                    <td>${result.result(storage_data[index].science).gpacal}</td>
+                                    <td>${result.result(storage_data[index].science).gradecal}</td>
+                                </tr>
+                                <tr>
+                                    <th>Social Science</th>
+                                    <td>${storage_data[index].ss}</td>
+                                    <td>${result.result(storage_data[index].ss).gpacal}</td>
+                                    <td>${result.result(storage_data[index].ss).gradecal}</td>
+                                </tr>
+                                <tr>
+                                    <th>Religion</th>
+                                    <td>${storage_data[index].reli}</td>
+                                    <td>${result.result(storage_data[index].reli).gpacal}</td>
+                                    <td>${result.result(storage_data[index].reli).gradecal}</td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+    
+    `;
 
 
 
